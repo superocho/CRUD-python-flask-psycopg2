@@ -6,6 +6,10 @@ app = Flask(__name__)
 conn = db.connection
 cursor = conn.cursor()
 
+# otro: Da formato para la columna de precio
+def formatoPrecio(precio):
+    return f"${precio:,.0f}".replace(",", ".")
+
 # pg: Insertar tupla en tabla clientes
 def addCliente(conn, nombre, correo, ciudad, fecha_registro=None):
     if fecha_registro is None:
@@ -26,16 +30,19 @@ def getClientes():
     cursor.execute("SELECT * FROM Clientes")
     return cursor.fetchall()
 
+# pg: Devuelve todos los productos de la tabla Productos
 def getProductos():
     cursor.execute("SELECT * FROM Productos")
     return cursor.fetchall()
 
+# pg: Devuelve todas las tuplas haciendo JOIN entre productos y categorias
 def getProductosJOINCategorias():
     cursor.execute(
         "SELECT * FROM Productos P JOIN Categorias C ON P.id_categoria = C.id_categoria"
     )
     return cursor.fetchall()
 
+# pg: Agregar producto a la tabla productos
 def addProducto(conn, producto, precio, stock, categoria):
     cursor.execute(
         "INSERT INTO Productos (nombre_producto, precio, stock, id_categoria) VALUES (%s, %s, %s, %s)",
@@ -43,18 +50,17 @@ def addProducto(conn, producto, precio, stock, categoria):
     )
     conn.commit()
 
+# pg: Eliminar producto de la tabla productos pasando la id del prodcuto que se quiera eliminar
 def deleteProducto(conn, id):
     cursor.execute("DELETE FROM Productos WHERE id_producto = %s", (id,))
     conn.commit()
 
-def getCategoriaNombre(id):
-    cursor.execute("SELECT C.nombre_categoria FROM Categorias C WHERE id_categoria = id")
-    return cursor.fetchone()
-
+# pg: Devuelve todas las categorias de la tabla Categorias
 def getCategorias():
     cursor.execute("SELECT * FROM Categorias")
     return cursor.fetchall()
 
+# --------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------
 
 # web: Muestra todos los clientes
@@ -64,7 +70,7 @@ def mostrarClientes():
     return render_template('clientes.html', clientes=clientes)
 
 # web: Agrega un cliente a la tabla Clientes con los datos ingresados en la pagina
-@app.route('/add', methods=['POST'])
+@app.route('/clientes/add', methods=['POST'])
 def addClienteWeb():
     nombre = request.form['nombre']
     correo = request.form['correo']
@@ -74,7 +80,7 @@ def addClienteWeb():
     return redirect(url_for('mostrarClientes'))
 
 # web: Eliminar cliente de la tabla Clientes
-@app.route('/delete/<string:id>', methods=['POST'])
+@app.route('/clientes/delete/<string:id>', methods=['POST'])
 def deleteClienteWeb(id):
     deleteCliente(conn, id)
     return redirect(url_for('mostrarClientes'))
@@ -102,6 +108,10 @@ def addProductoWeb():
 def deleteProductoWeb(id):
     deleteProducto(conn, id)
     return redirect(url_for('mostrarProductos'))
+
+@app.route('/')
+def home():
+    return render_template('home.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

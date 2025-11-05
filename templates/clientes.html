@@ -6,22 +6,22 @@
 
 {% block body %}
 <h1>Lista de Clientes</h1>
-<form action="/add" method="POST">
+<form action="/clientes/add" method="POST">
     <div class="row mb-3">
         <div class="col">
             <label>Nombre</label>
-            <input type="text" class="form-control mb-3" name="nombre">
+            <input type="text" name="nombre">
         </div>
         <div class="col">
             <label>Correo</label>
-            <input type="email" class="form-control mb-3" name="correo">
+            <input type="email" name="correo">
         </div>
         <div class="col">
             <label>Ciudad</label>
-            <input type="text" class="form-control mb-3" name="ciudad">
+            <input type="text" name="ciudad">
         </div>
         <div class="col">
-            <button class="btn btn-primary mb-3 mt-4" type="submit">Agregar</button>
+            <button class="btn btn-primary" type="submit">Agregar</button>
         </div>
     </div>
 </form>
@@ -47,7 +47,7 @@
                 <td>{{ cliente[4] }}</td>
                 <td>
                     <form method="POST" action="{{ url_for('deleteClienteWeb', id=cliente[0]) }}" style="display: inline;">
-                        <button type="submit" class="btn delete-btn" onclick="return confirm('Esta seguro/a?')">
+                        <button type="submit" class="btn" onclick="return confirm('Esta seguro/a?')">
                             Eliminar
                         </button>
                     </form>

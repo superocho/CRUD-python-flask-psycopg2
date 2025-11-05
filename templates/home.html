@@ -1,11 +1,15 @@
 {% extends 'base.html' %}
 
 {% block head %}
-
+<title>Inicio</title>
 {% endblock %}
 
 {% block body %}
-    <button>Clientes</button>
-    <button>Productos</button>
-    <button>Facturas</button>
+    Ir a...
+    <a href="{{ url_for('mostrarClientes') }}" class="btn-module btn-clientes">
+            <div class="btn-title">Clientes</div>
+        </a>
+        <a href="{{ url_for('mostrarProductos') }}" class="btn-module btn-productos">
+            <div class="btn-title">Productos</div>
+        </a>
 {% endblock %}
