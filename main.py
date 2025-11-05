@@ -6,10 +6,6 @@ app = Flask(__name__)
 conn = db.connection
 cursor = conn.cursor()
 
-# otro: Da formato para la columna de precio
-def formatoPrecio(precio):
-    return f"${precio:,.0f}".replace(",", ".")
-
 # pg: Insertar tupla en tabla clientes
 def addCliente(conn, nombre, correo, ciudad, fecha_registro=None):
     if fecha_registro is None:
