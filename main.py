@@ -60,12 +60,24 @@ def getCategorias():
     cursor.execute("SELECT * FROM Categorias")
     return cursor.fetchall()
 
+def getCategoriasJOIN():
+    cursor.execute("""
+        SELECT C.nombre_categoria, SUM(D.subtotal)
+        FROM Categorias C JOIN Productos P ON C.id_categoria = P.id_categoria
+        JOIN detalle_factura D ON P.id_producto = D.id_producto
+        GROUP BY C.nombre_categoria
+        ORDER BY SUM(D.subtotal) DESC
+    """)
+    return cursor.fetchall()
+
 # --------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------
 
 # web: Muestra todos los clientes
 @app.route('/clientes')
 def mostrarClientes():
+    for categoria in getCategoriasJOIN():
+        print(categoria)
     clientes = getClientes()
     return render_template('clientes.html', clientes=clientes)
 
@@ -108,6 +120,15 @@ def addProductoWeb():
 def deleteProductoWeb(id):
     deleteProducto(conn, id)
     return redirect(url_for('mostrarProductos'))
+
+@app.route('/categorias')
+def mostrarCategorias():
+    categorias = getCategoriasJOIN()
+    return render_template('categorias.html', categorias=categorias)
+
+# @app.route('/categorias/add')
+# def mostrarCategorias():
+#     return redirect(url_for('mostrarCategorias'))
 
 @app.route('/')
 def home():

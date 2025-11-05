@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Categorias</title>
+{% endblock %}
+
+{% block body %}
+<h1>Lista de Categorias</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Total Vendido</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if categorias %}
+            {% for categoria in categorias %}
+                <tr>
+                    <td>{{ categoria[0] }}</td>
+                    <td>${{ "{:,.0f}".format(categoria[1]) }}</td>
+                    <td>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}
