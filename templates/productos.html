@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Productos</title>
+{% endblock %}
+
+{% block body %}
+<h1>Lista de Productos</h1>
+<form action="/productos/add" method="POST">
+    <div class="row mb-3">
+        <div class="col">
+            <label>Producto</label>
+            <input type="text" class="form-control mb-3" name="producto">
+        </div>
+        <div class="col">
+            <label>Precio</label>
+            <input type="text" class="form-control mb-3" name="precio">
+        </div>
+        <div class="col">
+            <label>Stock</label>
+            <input type="text" class="form-control mb-3" name="stock">
+        </div>
+        <div class="col">
+            <label>Categoria</label>
+            <select name="categoria">
+                {% for categoria in categorias %}
+                <option value="{{ categoria[0] }}">{{ categoria[1] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary mb-3 mt-4" type="submit">Agregar</button>
+        </div>
+    </div>
+</form>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Producto</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Categoria</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if productos %}
+                {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto[0] }}</td>
+                        <td>{{ producto[1] }}</td>
+                        <td>{{ producto[2] }}</td>
+                        <td>{{ producto[3] }}</td>
+                        <td>{{ producto[6] }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('deleteProductoWeb', id=producto[0]) }}" style="display: inline;">
+                                <button type="submit" class="btn delete-btn" onclick="return confirm('Esta seguro/a?')">
+                                    Eliminar
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5" style="text-align: center;">No hay productos registrados</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}

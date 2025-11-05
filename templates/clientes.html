@@ -1,60 +1,60 @@
 {% extends 'base.html' %}
 
 {% block head %}
-
+<title>Clientes</title>
 {% endblock %}
 
 {% block body %}
 <h1>Lista de Clientes</h1>
-    <form action="/add" method="POST">
-        <div class="row mb-3">
-            <div class="col">
-                <label>Nombre</label>
-                <input type="text" class="form-control mb-3" name="nombre">
-            </div>
-            <div class="col">
-                <label>Correo</label>
-                <input type="email" class="form-control mb-3" name="correo">
-            </div>
-            <div class="col">
-                <label>Ciudad</label>
-                <input type="text" class="form-control mb-3" name="ciudad">
-            </div>
-            <div class="col">
-                <button class="btn btn-primary mb-3 mt-4" type="submit">Agregar</button>
-            </div>
+<form action="/add" method="POST">
+    <div class="row mb-3">
+        <div class="col">
+            <label>Nombre</label>
+            <input type="text" class="form-control mb-3" name="nombre">
         </div>
-    </form>
-    {% if clientes %}
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Ciudad</th>
-                    <th>Fecha de registro</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for cliente in clientes %}
-                    <tr>
-                        <td>{{ cliente[0] }}</td>
-                        <td>{{ cliente[1] }}</td>
-                        <td>{{ cliente[2] }}</td>
-                        <td>{{ cliente[3] }}</td>
-                        <td>{{ cliente[4] }}</td>
-                        <td>
-                            <form method="POST" action="{{ url_for('deleteClienteWeb', id=cliente[0]) }}" style="display: inline;">
-                                <button type="submit" class="btn delete-btn" onclick="return confirm('Esta seguro/a?')">
-                                    Eliminar
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
+        <div class="col">
+            <label>Correo</label>
+            <input type="email" class="form-control mb-3" name="correo">
+        </div>
+        <div class="col">
+            <label>Ciudad</label>
+            <input type="text" class="form-control mb-3" name="ciudad">
+        </div>
+        <div class="col">
+            <button class="btn btn-primary mb-3 mt-4" type="submit">Agregar</button>
+        </div>
+    </div>
+</form>
+{% if clientes %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Ciudad</th>
+            <th>Fecha de registro</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cliente in clientes %}
+            <tr>
+                <td>{{ cliente[0] }}</td>
+                <td>{{ cliente[1] }}</td>
+                <td>{{ cliente[2] }}</td>
+                <td>{{ cliente[3] }}</td>
+                <td>{{ cliente[4] }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('deleteClienteWeb', id=cliente[0]) }}" style="display: inline;">
+                        <button type="submit" class="btn delete-btn" onclick="return confirm('Esta seguro/a?')">
+                            Eliminar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
 {% endblock %}
