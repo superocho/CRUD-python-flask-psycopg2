@@ -1,18 +1,16 @@
 {% extends 'base.html' %}
 
 {% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 <title>Inicio</title>
 {% endblock %}
 
 {% block body %}
-    Ir a...
-    <a href="{{ url_for('mostrarClientes') }}" class="btn-module btn-clientes">
-            <div class="btn-title">Clientes</div>
-        </a>
-        <a href="{{ url_for('mostrarProductos') }}" class="btn-module btn-productos">
-            <div class="btn-title">Productos</div>
-        </a>
-        <a href="{{ url_for('mostrarCategorias') }}" class="btn-module btn-productos">
-            <div class="btn-title">Categorias</div>
-        </a>
+    
+    <div class="container">
+        <div class="texto-superior">Ir a...</div>
+        <a href="{{ url_for('mostrarClientes') }}" class="btn-module">Clientes</a>
+        <a href="{{ url_for('mostrarProductos') }}" class="btn-module">Productos</a>
+        <a href="{{ url_for('mostrarCategorias') }}" class="btn-module">Categorias</a>
+    </div>
 {% endblock %}

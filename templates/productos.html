@@ -54,11 +54,23 @@
                         <td>{{ producto[3] }}</td>
                         <td>{{ producto[6] }}</td>
                         <td>
-                            <form method="POST" action="{{ url_for('deleteProductoWeb', id=producto[0]) }}" style="display: inline;">
-                                <button type="submit" class="btn" onclick="return confirm('Esta seguro/a?')">
-                                    Eliminar
-                                </button>
-                            </form>
+
+                            <!-- EDITAR -->
+                            <button class="btn btn-editar" onclick="toggleForm('{{ producto[0] }}')">
+                                Editar
+                            </button>
+                            <div id="form-editar-{{ producto[0] }}" class="form-editar" style="display: none">
+                                <form method="POST" action="{{ url_for('editProductoWeb', id=producto[0]) }}">
+                                    <input type="text" name="nombre" value="{{ producto[1] }}">
+                                    <input type="text" name="precio" value="{{ producto[2] }}">
+                                    <input type="text" name="stock" value="{{ producto[3] }}">
+                                    <input type="text" name="id_categoria" value="{{ producto[4] }}">
+                                
+                                    <button type="submit" class="btn-guardar">Guardar</button>
+                                    <button type="button" class="btn-cancelar" onClick="toggleForm('{{ producto[0] }}')">Cancelar</button>
+                                </form>
+                            </div>
+
                         </td>
                     </tr>
                 {% endfor %}
@@ -69,4 +81,14 @@
             {% endif %}
         </tbody>
     </table>
+<script>
+function toggleForm(id) {
+    var form = document.getElementById('form-editar-' + id);
+    if (form.style.display === 'block') {
+        form.style.display = 'none';
+    } else {
+        form.style.display = 'block';
+    }
+}
+</script>
 {% endblock %}

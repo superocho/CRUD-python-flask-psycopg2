@@ -1,5 +1,0 @@
-
-GET -> obtener informacion
-POST -> crear informacion
-PUT -> actualizar informacion
-DELETE -> borrar informacion

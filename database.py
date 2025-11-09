@@ -1,10 +1,14 @@
-import psycopg2
+import os, psycopg2
+from dotenv import load_dotenv
+
+load_dotenv()  # Carga las variables del archivo .env
+
 connection = psycopg2.connect(
-    host = 'localhost',
-    database = 'tienda_demo',
-    user = 'postgres',
-    password = '0434',
-    port = 5432
+    host=os.getenv('DB_HOST'),
+    database=os.getenv('DB_NAME'),
+    user=os.getenv('DB_USER'),
+    password=os.getenv('DB_PASSWORD'),
+    port=os.getenv('DB_PORT')
 )
 
 # COMPROBACION SUBTOTAL = CANTIDAD * PRECIO

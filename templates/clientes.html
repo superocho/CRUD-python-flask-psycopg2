@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block body %}
+
 <h1>Lista de Clientes</h1>
 <form action="/clientes/add" method="POST">
     <div class="row mb-3">
@@ -46,15 +47,49 @@
                 <td>{{ cliente[3] }}</td>
                 <td>{{ cliente[4] }}</td>
                 <td>
+                    
+                    <!-- ELIMINAR -->
                     <form method="POST" action="{{ url_for('deleteClienteWeb', id=cliente[0]) }}" style="display: inline;">
                         <button type="submit" class="btn" onclick="return confirm('Esta seguro/a?')">
                             Eliminar
                         </button>
                     </form>
+                    
+                    <!-- EDITAR -->
+                     <button class="btn btn-editar" onclick="toggleForm('{{ cliente[0] }}')">
+                        Editar
+                    </button>
+                    <div id="form-editar-{{ cliente[0] }}" class="form-editar" style="display: none">
+                        <form method="POST" action="{{ url_for('editClienteWeb', id=cliente[0]) }}">
+                            <input type="text" name="nombre" value="{{ cliente[1] }}">
+                            <input type="email" name="correo" value="{{ cliente[2] }}">
+                            <input type="text" name="ciudad" value="{{ cliente[3] }}">
+
+                            <button type="submit" class="btn-guardar">Guardar</button>
+                            <button type="button" class="btn-cancelar" onClick="toggleForm('{{ cliente[0] }}')">Cancelar</button>
+                        </form>
+                    </div>
+
                 </td>
             </tr>
+
+            
+
         {% endfor %}
     </tbody>
 </table>
+
 {% endif %}
+<script>
+function toggleForm(id) {
+    var form = document.getElementById('form-editar-' + id);
+    if (form.style.display === 'block') {
+        form.style.display = 'none';
+    } else {
+        form.style.display = 'block';
+    }
+}
+</script>
 {% endblock %}
+
+

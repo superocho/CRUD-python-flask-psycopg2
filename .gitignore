@@ -1,0 +1,10 @@
+# Archivos de entorno
+.env
+*.env
+
+# PyCharm
+.idea/
+
+# Python
+__pycache__/
+*.pyc
