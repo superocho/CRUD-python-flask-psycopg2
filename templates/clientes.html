@@ -18,8 +18,37 @@
             <input type="email" name="correo">
         </div>
         <div class="col">
-            <label>Ciudad</label>
-            <input type="text" name="ciudad">
+            <label>Region</label>
+            <select name="region">
+                {% if regiones %}
+                        <option value="0">--Seleccione una region...</option>
+                    {% for region in regiones %}
+                        <option value="{{region[0]}}">{{region[1]}}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+        <div class="col">
+            <label>Provincia</label>
+            <select name="provincia">
+                {% if provincias %}
+                        <option value="0">--Seleccione una provincia...</option>
+                    {% for provincia in provincias %}
+                        <option value="{{provincia[0]}}">{{provincia[1]}}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+        <div class="col">
+            <label>Comuna</label>
+            <select name="comuna">
+                {% if comunas %}
+                        <option value="0">--Seleccione una comuna...</option>
+                    {% for comuna in comunas %}
+                        <option value="{{comuna[0]}}">{{comuna[1]}}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
         </div>
         <div class="col">
             <button class="btn btn-primary" type="submit">Agregar</button>

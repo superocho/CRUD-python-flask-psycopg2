@@ -112,6 +112,31 @@ def deleteCliente(conn, id):
     cursor.execute("DELETE FROM Clientes WHERE id_cliente = %s", (id,))
     conn.commit()
 
+# pg: Devuelve todas las regiones
+def getRegiones():
+    cursor.execute("SELECT * FROM regiones_cl ORDER BY id_re ASC")
+    return cursor.fetchall()
+
+# pg: Devuelve todas las provincias de una region correspondiente
+def getProvinciasPorRegion(id_region):
+    cursor.execute("""
+        SELECT *
+        FROM provincia_cl P
+        WHERE P.id_re = %s
+        ORDER BY P.str_descripcion ASC
+    """, id_region)
+    return cursor.fetchall()
+
+# pg: Devuelve todas las comunas de una provincia correspondiente
+def getComunasPorProvincia(id_provincia):
+    cursor.execute("""
+        SELECT *
+        FROM comuna_cl C
+        WHERE C.id_pr = %s
+        ORDER BY C.str_descripcion ASC
+    """, id_provincia)
+    return cursor.fetchall()
+
 # --------------------------------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------------------------------
 
@@ -119,6 +144,7 @@ def deleteCliente(conn, id):
 @app.route('/clientes')
 def mostrarClientes():
     clientes = getClientes()
+    
     return render_template('clientes.html', clientes=clientes)
 
 # web: Agrega un cliente a la tabla Clientes con los datos ingresados en la pagina
@@ -126,9 +152,11 @@ def mostrarClientes():
 def addClienteWeb():
     nombre = request.form['nombre']
     correo = request.form['correo']
-    ciudad = request.form['ciudad']
-    if(nombre and correo and ciudad):
-        addCliente(conn, nombre, correo, ciudad)
+    region = request.form['region']
+    provincia = request.form['provincia']
+    comuna = request.form['comuna']
+    if(nombre and correo and region and provincia and comuna):
+        addCliente(conn, nombre, correo, comuna)
     return redirect(url_for('mostrarClientes'))
 
 # web: Editar los atributos de un cliente de la tabla Clientes con los datos ingresados en la pagina
