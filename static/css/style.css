@@ -133,7 +133,7 @@ tbody tr:last-child td {
     border-radius: 3px;
 }
 
-.btn-editar, .btn-eliminar, .btn-guardar, .btn-cancelar {
+.btn-eliminar, .btn-guardar, .btn-cancelar {
     padding: 5px 10px;
     border: none;
     border-radius: 3px;
