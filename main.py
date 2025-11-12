@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from datetime import date
 import database as db
 
@@ -114,7 +114,7 @@ def deleteCliente(conn, id):
 
 # pg: Devuelve todas las regiones
 def getRegiones():
-    cursor.execute("SELECT * FROM regiones_cl ORDER BY id_re ASC")
+    cursor.execute("SELECT * FROM region_cl ORDER BY id_re ASC")
     return cursor.fetchall()
 
 # pg: Devuelve todas las provincias de una region correspondiente
@@ -124,7 +124,7 @@ def getProvinciasPorRegion(id_region):
         FROM provincia_cl P
         WHERE P.id_re = %s
         ORDER BY P.str_descripcion ASC
-    """, id_region)
+    """, (id_region,))
     return cursor.fetchall()
 
 # pg: Devuelve todas las comunas de una provincia correspondiente
@@ -134,7 +134,7 @@ def getComunasPorProvincia(id_provincia):
         FROM comuna_cl C
         WHERE C.id_pr = %s
         ORDER BY C.str_descripcion ASC
-    """, id_provincia)
+    """, (id_provincia,))
     return cursor.fetchall()
 
 # --------------------------------------------------------------------------------------------------------
@@ -144,7 +144,6 @@ def getComunasPorProvincia(id_provincia):
 @app.route('/clientes')
 def mostrarClientes():
     clientes = getClientes()
-    
     return render_template('clientes.html', clientes=clientes)
 
 # web: Agrega un cliente a la tabla Clientes con los datos ingresados en la pagina
@@ -157,6 +156,8 @@ def addClienteWeb():
     comuna = request.form['comuna']
     if(nombre and correo and region and provincia and comuna):
         addCliente(conn, nombre, correo, comuna)
+    else:
+        return "Error: debe seleccionar todos los campos necesarios", 400
     return redirect(url_for('mostrarClientes'))
 
 # web: Editar los atributos de un cliente de la tabla Clientes con los datos ingresados en la pagina
@@ -205,15 +206,30 @@ def editProductoWeb(id):
     return redirect(url_for('mostrarProductos'))
 
 # web: Eliminar producto por id
-@app.route('/productos/delete/<string:id>', methods=['POST'])
-def deleteProductoWeb(id):
-    deleteProducto(conn, id)
-    return redirect(url_for('mostrarProductos'))
+# @app.route('/productos/delete/<string:id>', methods=['POST'])
+# def deleteProductoWeb(id):
+#     deleteProducto(conn, id)
+#    return redirect(url_for('mostrarProductos'))
 
 @app.route('/categorias')
 def mostrarCategorias():
     categorias = getCategoriasJOIN()
     return render_template('categorias.html', categorias=categorias)
+
+@app.route('/api/regiones')
+def getRegionesAPI():
+    regiones = getRegiones()
+    return jsonify([{'id': r[0], 'nombre': r[1]} for r in regiones])
+
+@app.route('/api/provincias/<int:id_region>')
+def getProvinciasAPI(id_region):
+    provincias = getProvinciasPorRegion(id_region)
+    return jsonify([{'id': p[0], 'nombre': p[2]} for p in provincias])
+
+@app.route('/api/comunas/<int:id_provincia>')
+def getComunasAPI(id_provincia):
+    comunas = getComunasPorProvincia(id_provincia)
+    return jsonify([{'id': c[0], 'nombre': c[2]} for c in comunas])
 
 @app.route('/')
 def home():

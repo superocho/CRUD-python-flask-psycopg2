@@ -18,36 +18,21 @@
             <input type="email" name="correo">
         </div>
         <div class="col">
-            <label>Region</label>
-            <select name="region">
-                {% if regiones %}
-                        <option value="0">--Seleccione una region...</option>
-                    {% for region in regiones %}
-                        <option value="{{region[0]}}">{{region[1]}}</option>
-                    {% endfor %}
-                {% endif %}
+            <label for="region">Region</label>
+            <select id="region" name="region" required>
+                <option value="">Seleccione una regin...</option>
             </select>
         </div>
         <div class="col">
-            <label>Provincia</label>
-            <select name="provincia">
-                {% if provincias %}
-                        <option value="0">--Seleccione una provincia...</option>
-                    {% for provincia in provincias %}
-                        <option value="{{provincia[0]}}">{{provincia[1]}}</option>
-                    {% endfor %}
-                {% endif %}
+            <label for="provincia">Provincia</label>
+            <select id="provincia" name="provincia" required disabled>
+                <option value="">Seleccione una provincia...</option>
             </select>
         </div>
         <div class="col">
-            <label>Comuna</label>
-            <select name="comuna">
-                {% if comunas %}
-                        <option value="0">--Seleccione una comuna...</option>
-                    {% for comuna in comunas %}
-                        <option value="{{comuna[0]}}">{{comuna[1]}}</option>
-                    {% endfor %}
-                {% endif %}
+            <label for="comuna">Comuna</label>
+            <select id="comuna" name="comuna" required disabled>
+                <option value="">Seleccione una comuna...</option>
             </select>
         </div>
         <div class="col">
@@ -119,6 +104,8 @@ function toggleForm(id) {
     }
 }
 </script>
+<script src="{{ url_for('static', filename='js/selects.js') }}"></script>
+<script>console.log("ASDOKJASLDJASÑLDASLD")</script>
 {% endblock %}
 
 
