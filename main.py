@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from datetime import date
 import database as db
+import json
 
 app = Flask(__name__)
 conn = db.connection
@@ -214,7 +215,15 @@ def editProductoWeb(id):
 @app.route('/categorias')
 def mostrarCategorias():
     categorias = getCategoriasJOIN()
-    return render_template('categorias.html', categorias=categorias)
+    labels = []
+    ventas = []
+    for c in categorias:
+        labels.append(c[0])
+        ventas.append(int(c[1]))
+    # Convertir a JSON en orden inverso
+    labels_json = json.dumps(labels[::-1])
+    ventas_json = json.dumps(ventas[::-1])
+    return render_template('categorias.html', categorias=categorias, labels=labels_json, ventas=ventas_json)
 
 @app.route('/api/regiones')
 def getRegionesAPI():
